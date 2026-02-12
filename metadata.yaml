@@ -20,7 +20,7 @@ metadata:
     config.kubernetes.io/local-config: "true"
 spec:
   info:
-    title: terraform-google-firebase
+    title: releasing/terraform-google-firebase/terraform-google-firebase
     source:
       repo: https://github.com/TrCaM/terraform-google-firebase.git
       sourceType: git
@@ -34,17 +34,15 @@ spec:
         location: modules/firebase_app_check
       - name: firebase_app_hosting
         location: modules/firebase_app_hosting
-      - name: firebase_apps
-        location: modules/firebase_apps
       - name: firebase_auth
         location: modules/firebase_auth
-      - name: firebase_core
-        location: modules/firebase_core
+      - name: firebase_multi_platform_application
+        location: modules/firebase_multi_platform_application
       - name: firebase_rules
         location: modules/firebase_rules
     examples:
-      - name: firebase_project
-        location: examples/firebase_project
+      - name: firebase_multi_platform_app
+        location: examples/firebase_multi_platform_app
   interfaces: {}
   requirements:
     roles:

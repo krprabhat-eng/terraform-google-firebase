@@ -1,0 +1,76 @@
+/**
+ * Copyright 2026 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package firebase_util
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/tidwall/gjson"
+)
+
+// AppType represents a type of Firebase application.
+type AppType string
+
+const (
+	Web     AppType = "webApps"
+	Android AppType = "androidApps"
+	IOS     AppType = "iosApps"
+)
+
+// Label returns a friendly label for the application type.
+func (a AppType) Label() string {
+	switch a {
+	case Web:
+		return "WEB"
+	case Android:
+		return "ANDROID"
+	case IOS:
+		return "IOS"
+	default:
+		return string(a)
+	}
+}
+
+// GetAppList retrieves the list of apps for a given platform from the Firebase Management API.
+func GetAppList(t *testing.T, projectId string, appType AppType, token string) []gjson.Result {
+	url := fmt.Sprintf("https://firebase.googleapis.com/v1beta1/projects/%s/%s", projectId, appType)
+	t.Logf("Fetching %s list from: %s", appType.Label(), url)
+
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", url, nil)
+	assert.NoError(t, err, "Failed to create HTTP request")
+
+	req.Header.Add("Authorization", "Bearer "+token)
+	req.Header.Add("X-Goog-User-Project", projectId)
+
+	resp, err := client.Do(req)
+	assert.NoError(t, err, "HTTP request failed")
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	assert.NoError(t, err, "Failed to read response body")
+
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("API request failed with status %d: %s", resp.StatusCode, string(body))
+	}
+
+	return gjson.ParseBytes(body).Get("apps").Array()
+}

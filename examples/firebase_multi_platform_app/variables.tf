@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
-resource "terraform_data" "placeholder" {
-  input = "firebase_core placeholder"
+variable "project_id" {
+  description = "The GCP project ID to use for the example."
+  type        = string
 }

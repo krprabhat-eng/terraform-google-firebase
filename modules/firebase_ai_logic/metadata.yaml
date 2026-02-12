@@ -32,8 +32,8 @@ spec:
     icon: assets/icon.png
   content:
     examples:
-      - name: firebase_project
-        location: examples/firebase_project
+      - name: firebase_multi_platform_app
+        location: examples/firebase_multi_platform_app
   interfaces:
     variables:
       - name: project_id

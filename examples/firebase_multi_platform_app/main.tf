@@ -14,9 +14,18 @@
  * limitations under the License.
  */
 
-module "firebase_core" {
-  source = "../../modules/firebase_core"
-  # [restore-marker]   version = "~> 0.1"
+module "multi_platform_app" {
+  source       = "../../modules/firebase_multi_platform_application"
+  project_id   = var.project_id
+  display_name = "Canonical Example App"
 
-  project_id = var.project_id
+  web_app = {}
+
+  android_app = {
+    package_name = "com.example.canonical"
+  }
+
+  apple_app = {
+    bundle_id = "com.example.canonical"
+  }
 }
