@@ -36,11 +36,8 @@ module "firebase_app" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| android\_app | Configuration for a Firebase Android App. Set to null to skip. | <pre>object({<br>    package_name  = string<br>    sha256_hashes = optional(list(string))<br>  })</pre> | `null` | no |
-| apple\_app | Configuration for a Firebase Apple (iOS) App. Set to null to skip. | <pre>object({<br>    bundle_id = string<br>    team_id   = optional(string)<br>  })</pre> | `null` | no |
-| display\_name | The display name for all apps in this instance. | `string` | n/a | yes |
+| apps | Configuration for Firebase apps. | <pre>object({<br>    web_app = optional(object({<br>      display_name = string<br>      api_key_id   = optional(string)<br>    }))<br>    android_app = optional(object({<br>      package_name  = string<br>      display_name  = optional(string)<br>      sha256_hashes = optional(list(string))<br>    }))<br>    apple_app = optional(object({<br>      bundle_id    = string<br>      display_name = optional(string)<br>      team_id      = optional(string)<br>    }))<br>  })</pre> | `{}` | no |
 | project\_id | The GCP project ID to initialize Firebase in. | `string` | n/a | yes |
-| web\_app | Configuration for a Firebase Web App. Set to null to skip. | <pre>object({<br>    api_key_id = optional(string)<br>  })</pre> | `null` | no |
 
 ## Outputs
 

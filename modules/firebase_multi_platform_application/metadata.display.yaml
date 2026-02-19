@@ -34,9 +34,9 @@ spec:
         apple_app:
           name: apple_app
           title: Apple App
-        display_name:
-          name: display_name
-          title: Display Name
+        apps:
+          name: apps
+          title: Apps
         project_id:
           name: project_id
           title: Project Id

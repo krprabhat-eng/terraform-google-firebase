@@ -19,33 +19,24 @@ variable "project_id" {
   type        = string
 }
 
-variable "display_name" {
-  description = "The display name for all apps in this instance."
-  type        = string
-}
 
-variable "web_app" {
-  description = "Configuration for a Firebase Web App. Set to null to skip."
+variable "apps" {
+  description = "Configuration for Firebase apps."
   type = object({
-    api_key_id = optional(string)
+    web_app = optional(object({
+      display_name = string
+      api_key_id   = optional(string)
+    }))
+    android_app = optional(object({
+      package_name  = string
+      display_name  = optional(string)
+      sha256_hashes = optional(list(string))
+    }))
+    apple_app = optional(object({
+      bundle_id    = string
+      display_name = optional(string)
+      team_id      = optional(string)
+    }))
   })
-  default = null
-}
-
-variable "android_app" {
-  description = "Configuration for a Firebase Android App. Set to null to skip."
-  type = object({
-    package_name  = string
-    sha256_hashes = optional(list(string))
-  })
-  default = null
-}
-
-variable "apple_app" {
-  description = "Configuration for a Firebase Apple (iOS) App. Set to null to skip."
-  type = object({
-    bundle_id = string
-    team_id   = optional(string)
-  })
-  default = null
+  default = {}
 }

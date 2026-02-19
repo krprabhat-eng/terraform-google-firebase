@@ -20,47 +20,47 @@ resource "google_firebase_project" "default" {
 }
 
 resource "google_firebase_web_app" "default" {
-  count        = var.web_app != null ? 1 : 0
+  count        = var.apps.web_app != null ? 1 : 0
   provider     = google-beta
   project      = google_firebase_project.default.project
-  display_name = var.display_name
-  api_key_id   = var.web_app.api_key_id
+  display_name = var.apps.web_app.display_name
+  api_key_id   = var.apps.web_app.api_key_id
 }
 
 resource "google_firebase_android_app" "default" {
-  count         = var.android_app != null ? 1 : 0
+  count         = var.apps.android_app != null ? 1 : 0
   provider      = google-beta
   project       = google_firebase_project.default.project
-  display_name  = var.display_name
-  package_name  = var.android_app.package_name
-  sha256_hashes = var.android_app.sha256_hashes
+  display_name  = coalesce(var.apps.android_app.display_name, var.apps.android_app.package_name)
+  package_name  = var.apps.android_app.package_name
+  sha256_hashes = var.apps.android_app.sha256_hashes
 }
 
 resource "google_firebase_apple_app" "default" {
-  count        = var.apple_app != null ? 1 : 0
+  count        = var.apps.apple_app != null ? 1 : 0
   provider     = google-beta
   project      = google_firebase_project.default.project
-  display_name = var.display_name
-  bundle_id    = var.apple_app.bundle_id
-  team_id      = var.apple_app.team_id
+  display_name = coalesce(var.apps.apple_app.display_name, var.apps.apple_app.bundle_id)
+  bundle_id    = var.apps.apple_app.bundle_id
+  team_id      = var.apps.apple_app.team_id
 }
 
 data "google_firebase_web_app_config" "default" {
-  count      = var.web_app != null ? 1 : 0
+  count      = var.apps.web_app != null ? 1 : 0
   provider   = google-beta
   project    = google_firebase_project.default.project
   web_app_id = google_firebase_web_app.default[0].app_id
 }
 
 data "google_firebase_android_app_config" "default" {
-  count    = var.android_app != null ? 1 : 0
+  count    = var.apps.android_app != null ? 1 : 0
   provider = google-beta
   project  = google_firebase_project.default.project
   app_id   = google_firebase_android_app.default[0].app_id
 }
 
 data "google_firebase_apple_app_config" "default" {
-  count    = var.apple_app != null ? 1 : 0
+  count    = var.apps.apple_app != null ? 1 : 0
   provider = google-beta
   project  = google_firebase_project.default.project
   app_id   = google_firebase_apple_app.default[0].app_id

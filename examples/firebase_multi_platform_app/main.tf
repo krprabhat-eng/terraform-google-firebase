@@ -17,15 +17,16 @@
 module "multi_platform_app" {
   source       = "../../modules/firebase_multi_platform_application"
   project_id   = var.project_id
-  display_name = "Canonical Example App"
 
-  web_app = {}
-
-  android_app = {
-    package_name = "com.example.canonical"
-  }
-
-  apple_app = {
-    bundle_id = "com.example.canonical"
+  apps = {
+    web_app = {
+      display_name = "Canonical Example Web App"
+    }
+    android_app = {
+      package_name = "com.example.canonical"
+    }
+    apple_app = {
+      bundle_id = "com.example.canonical"
+    }
   }
 }

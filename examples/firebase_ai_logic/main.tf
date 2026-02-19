@@ -25,9 +25,12 @@ provider "google-beta" {
 module "multi_platform_app" {
   source       = "../../modules/firebase_multi_platform_application"
   project_id   = var.project_id
-  display_name = "AI Logic Integration App"
 
-  web_app = {}
+  apps = {
+    web_app = {
+      display_name = "AI Logic Integration Web App"
+    }
+  }
 }
 
 module "ai_logic_core" {

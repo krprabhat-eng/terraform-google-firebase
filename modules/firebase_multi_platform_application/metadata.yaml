@@ -1,3 +1,17 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 apiVersion: blueprints.cloud.google.com/v1alpha1
 kind: BlueprintMetadata
 metadata:
@@ -30,47 +44,57 @@ spec:
         description: The GCP project ID to initialize Firebase in.
         varType: string
         required: true
-      - name: display_name
-        description: The display name for all apps in this instance.
-        varType: string
-        required: true
-      - name: web_app
-        description: Configuration for a Firebase Web App. Set to null to skip.
+      - name: apps
+        description: Configuration for Firebase apps.
         varType: |-
           object({
-              api_key_id = optional(string)
+              web_app = optional(object({
+                display_name = string
+                api_key_id   = optional(string)
+              }))
+              android_app = optional(object({
+                package_name  = string
+                display_name  = optional(string)
+                sha256_hashes = optional(list(string))
+              }))
+              apple_app = optional(object({
+                bundle_id    = string
+                display_name = optional(string)
+                team_id      = optional(string)
+              }))
             })
-      - name: android_app
-        description: Configuration for a Firebase Android App. Set to null to skip.
-        varType: |-
-          object({
-              package_name  = string
-              sha256_hashes = optional(list(string))
-            })
-      - name: apple_app
-        description: Configuration for a Firebase Apple (iOS) App. Set to null to skip.
-        varType: |-
-          object({
-              bundle_id = string
-              team_id   = optional(string)
-            })
+        defaultValue: {}
     outputs:
       - name: android_config
         description: The google-services.json content for the Android App.
+        type: string
       - name: app_ids
         description: Map of platform names to their respective Firebase App IDs.
         type:
           - object
-          - android: dynamic
-            ios: dynamic
-            web: dynamic
+          - android: string
+            ios: string
+            web: string
       - name: ios_config
         description: The GoogleService-Info.plist content for the Apple App.
+        type: string
       - name: project_id
         description: The project ID.
         type: string
       - name: web_config
         description: The configuration snippet for the Firebase Web App.
+        type:
+          - object
+          - api_key: string
+            auth_domain: string
+            database_url: string
+            id: string
+            location_id: string
+            measurement_id: string
+            messaging_sender_id: string
+            project: string
+            storage_bucket: string
+            web_app_id: string
   requirements:
     roles:
       - level: Project
@@ -82,8 +106,6 @@ spec:
       - identitytoolkit.googleapis.com
       - serviceusage.googleapis.com
       - firebasevertexai.googleapis.com
-      - generativelanguage.googleapis.com
-      - aiplatform.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 5.0, < 8.0"

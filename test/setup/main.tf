@@ -30,8 +30,6 @@ module "project" {
     "identitytoolkit.googleapis.com",
     "serviceusage.googleapis.com",
     "firebasevertexai.googleapis.com",
-    "generativelanguage.googleapis.com",
-    "aiplatform.googleapis.com",
   ]
 
   deletion_policy = "DELETE"

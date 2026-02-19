@@ -84,8 +84,6 @@ spec:
       - identitytoolkit.googleapis.com
       - serviceusage.googleapis.com
       - firebasevertexai.googleapis.com
-      - generativelanguage.googleapis.com
-      - aiplatform.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 5.0, < 8.0"
