@@ -14,18 +14,13 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  description = "The project ID to deploy to"
-  type        = string
-}
+terraform {
+  required_version = ">= 1.3"
 
-variable "facebook_app_id" {
-  description = "The Facebook App ID (from Meta for Developers)"
-  type        = string
-}
-
-variable "facebook_app_secret" {
-  description = "The Facebook App Secret (from Meta for Developers)"
-  type        = string
-  sensitive   = true
+  required_providers {
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = ">= 6.13.0"
+    }
+  }
 }

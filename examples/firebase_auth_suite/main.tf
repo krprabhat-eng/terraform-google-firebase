@@ -15,44 +15,34 @@
  */
 
 module "auth_core" {
-  source = "../../modules/firebase_auth_core"
+  source = "../../modules/firebase_auth"
 
-  project_id             = var.project_id
-  email_enabled          = true
-  anonymous_enabled      = true
-  allow_duplicate_emails = false
-}
+  project_id = var.project_id
 
-module "auth_google" {
-  source = "../../modules/firebase_auth_google"
+  auth_config = {
+    email_enabled          = true
+    anonymous_enabled      = true
+    allow_duplicate_emails = false
+  }
 
-  project_id    = module.auth_core.project_id
-  client_id     = var.google_client_id
-  client_secret = var.google_client_secret
-}
-
-module "auth_facebook" {
-  source = "../../modules/firebase_auth_facebook"
-
-  project_id          = module.auth_core.project_id
-  facebook_app_id     = var.facebook_app_id
-  facebook_app_secret = var.facebook_app_secret
-}
-
-module "auth_github" {
-  source = "../../modules/firebase_auth_github"
-
-  project_id    = module.auth_core.project_id
-  client_id     = var.github_client_id
-  client_secret = var.github_client_secret
-}
-
-module "auth_apple" {
-  source = "../../modules/firebase_auth_apple"
-
-  project_id    = module.auth_core.project_id
-  service_id    = var.apple_service_id
-  team_id       = var.apple_team_id
-  key_id        = var.apple_key_id
-  client_secret = var.apple_client_secret
+  auth_providers = {
+    google = {
+      client_id     = var.google_client_id
+      client_secret = var.google_client_secret
+    }
+    facebook = {
+      app_id     = var.facebook_app_id
+      app_secret = var.facebook_app_secret
+    }
+    github = {
+      client_id     = var.github_client_id
+      client_secret = var.github_client_secret
+    }
+    apple = {
+      service_id    = var.apple_service_id
+      team_id       = var.apple_team_id
+      key_id        = var.apple_key_id
+      client_secret = var.apple_client_secret
+    }
+  }
 }

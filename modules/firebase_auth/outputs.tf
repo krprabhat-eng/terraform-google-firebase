@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
-# Google IDP Configuration
-resource "google_identity_platform_default_supported_idp_config" "google" {
-  provider      = google-beta
-  project       = var.project_id
-  idp_id        = "google.com"
-  enabled       = true
-  client_id     = var.client_id
-  client_secret = var.client_secret
+output "project_id" {
+  description = "The project ID."
+  value       = var.project_id
+}
+
+output "enabled_providers" {
+  description = "List of enabled authentication providers."
+  value = compact([
+    var.auth_providers.google != null ? "google.com" : null,
+    var.auth_providers.apple != null ? "apple.com" : null,
+    var.auth_providers.facebook != null ? "facebook.com" : null,
+    var.auth_providers.github != null ? "github.com" : null,
+  ])
 }
